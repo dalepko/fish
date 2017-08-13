@@ -4,6 +4,10 @@ if test -f $host_file
     source $host_file
 end
 
+if test -d ~/bin
+    set PATH ~/bin $PATH
+end
+
 # aliases
 alias gcm "git commit -m"
 alias gca "git commit --amend"

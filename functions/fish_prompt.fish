@@ -21,7 +21,7 @@ function git_info
             set -l upstream (git rev-parse --symbolic-full-name --abbrev-ref "@{u}" ^ /dev/null)
             if [ (count $upstream) -eq 1 ]
                 set -l updown (git rev-list HEAD...$upstream --count --left-right ^ /dev/null | sed 's/\t/\n/')
-                
+
                 if [ (count $updown) -eq 2 ]
                     set -l up $updown[1]
                     set -l down $updown[2]
@@ -49,13 +49,15 @@ end
 
 function venv_info
     if set -q VIRTUAL_ENV
-      echo -n -s "(" (basename "$VIRTUAL_ENV") ")"
+        echo -n -s "(" (basename "$VIRTUAL_ENV") ")"
+    else if set -q PYENV_VERSION
+        echo -n -s "($PYENV_VERSION)"
     end
 end
 
 
 function fish_prompt --description 'Write out the prompt'
-    set -l parts (venv_info) (git_info) 
-    
+    set -l parts (venv_info) (git_info)
+
     echo -sn (in_color purple $USER) ":" "$parts " (in_color green (prompt_pwd)) "> "
 end
