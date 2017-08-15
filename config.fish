@@ -14,6 +14,17 @@ alias gca "git commit --amend"
 alias e "emacsclient -nw"
 
 
+
+# fzf config
+switch (uname)
+case Linux
+    alias fzf ~/.config/fish/libexec/fzf-linux
+case Darwin
+    alias fzf ~/.config/fish/libexec/fzf-mac
+end
+
+set -gx FZF_DEFAULT_OPTS "--height 5 --color=bw"
+
 # helpers
 complete -Cgit --do-complete='git commit' > /dev/null
 
