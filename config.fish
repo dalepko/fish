@@ -23,7 +23,7 @@ case Darwin
     alias fzf ~/.config/fish/libexec/fzf-mac
 end
 
-set -gx FZF_DEFAULT_OPTS "--height 5 --color=bw"
+set -gx FZF_DEFAULT_OPTS "--height 5 --color=bw --tiebreak=index"
 
 # helpers
 complete -Cgit --do-complete='git commit' > /dev/null
