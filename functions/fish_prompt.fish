@@ -50,7 +50,7 @@ end
 function venv_info
     if set -q VIRTUAL_ENV
         echo -n -s "(" (basename "$VIRTUAL_ENV") ")"
-    else if set -q PYENV_VERSION
+   else if begin set -q PYENV_VERSION; and test $PYENV_VERSION != 'default'; end
         echo -n -s "($PYENV_VERSION)"
     end
 end
