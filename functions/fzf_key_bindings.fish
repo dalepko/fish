@@ -1,10 +1,7 @@
 # Key bindings
 # ------------
 
-echo loading
 function fzf_key_bindings
-  echo executing 
-
   # Store current token in $dir as root for the 'find' command
   function fzf-file-widget -d "List files and folders"
     set -l commandline (__fzf_parse_commandline)
@@ -94,7 +91,6 @@ function fzf_key_bindings
     end
   end
 
-  echo binding
   bind \ct fzf-file-widget
   bind \cr fzf-history-widget
   bind \ec fzf-cd-widget
