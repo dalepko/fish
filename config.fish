@@ -8,12 +8,17 @@ if test -d ~/bin
     set PATH ~/bin $PATH
 end
 
+
+set -l creds_file ~/.config/creds.fish
+
+if test -f $creds_file
+    source $creds_file
+end
+
 # aliases
 alias gcm "git commit -m"
 alias gca "git commit --amend"
 alias e "emacsclient -nw"
-
-
 
 # fzf config
 switch (uname)
