@@ -56,7 +56,8 @@ end
 if status --is-interactive
     function __pyenv_full_path --argument-names 'venv_name'
         set -q PYENV_ROOT; or set PYENV_ROOT ~/.pyenv
-        bash -c "cd '$PYENV_ROOT/versions/$venv_name' && pwd"
+        readlink "$PYENV_ROOT/versions/$venv_name"
+        or echo "$PYENV_ROOT/versions/$venv_name"
     end
 
     function __pyenv_deactivate --on-variable VIRTUAL_ENV
