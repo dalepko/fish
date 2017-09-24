@@ -1,4 +1,6 @@
-eval (python -m virtualfish auto_activation)
+if status --is-interactive
+    eval (python -m virtualfish auto_activation)
+end
 
 set PATH $PATH /opt/node/bin/
 
