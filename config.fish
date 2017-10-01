@@ -92,8 +92,8 @@ if status is-interactive
         if set fname (__find_project_file .python-version)
             set pyenv (cat $fname)
             if test $pyenv != "$__pyenv_current"
-                set -gx VIRTUAL_ENV (__pyenv_full_path $venv_name)
-                set -gx __pyenv_current $venv_name
+                set -gx VIRTUAL_ENV (__pyenv_full_path $pyenv)
+                set -gx __pyenv_current $pyenv
                 set PATH "$VIRTUAL_ENV/bin" $PATH
             end
         else if set -q __pyenv_current
