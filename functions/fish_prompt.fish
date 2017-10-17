@@ -20,7 +20,7 @@ function git_info
             set head_color blue
             set -l upstream (git rev-parse --symbolic-full-name --abbrev-ref "@{u}" ^ /dev/null)
             if [ (count $upstream) -eq 1 ]
-                set -l updown (git rev-list HEAD...$upstream --count --left-right ^ /dev/null | sed 's/\t/\n/')
+                set -l updown (git rev-list HEAD...$upstream --count --left-right ^ /dev/null | tr '\t' '\n')
 
                 if [ (count $updown) -eq 2 ]
                     set -l up $updown[1]
@@ -48,7 +48,7 @@ end
 
 
 function venv_info
-    if set -q VIRTUAL_ENV
+    if begin; set -q VIRTUAL_ENV; and test (basename "$VIRTUAL_ENV") != 'default'; end
         echo -n -s "(" (basename "$VIRTUAL_ENV") ")"
    else if begin set -q PYENV_VERSION; and test $PYENV_VERSION != 'default'; end
         echo -n -s "($PYENV_VERSION)"
