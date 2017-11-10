@@ -29,13 +29,13 @@ function git_info
                         if [ $down -eq 0 ]
                             set branch_status ''
                         else
-                            set branch_status (in_color red ↑)
+                            set branch_status (in_color red ⬇)
                         end
                     else
                         if [ $down -eq 0 ]
-                            set branch_status (in_color red ↑)
+                            set branch_status (in_color red ⬆)
                         else
-                            set branch_status (in_color red ↕)
+                            set branch_status (in_color red ⬍)
                         end
                     end
                 end
