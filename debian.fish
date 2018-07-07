@@ -4,6 +4,6 @@ end
 
 set PATH $PATH /opt/node/bin/
 
-alias tvon "xrandr --output DVI-1 --off"
-alias tvoff "xrandr --output DVI-1 --right-of DVI-0"
+alias tvoff "xrandr --output HDMI-A-0 --off"
+alias tvon "xrandr --output HDMI-A-0 --right-of DisplayPort-0 --auto"
 alias pyenv $HOME/.pyenv/bin/pyenv
