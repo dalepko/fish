@@ -1,0 +1,1 @@
+/home/david/.config/fisherman/nvm/functions/node.fish
