@@ -52,7 +52,6 @@ if status is-interactive
         source
     end
 
-    # load virtualfish and auto-activate pyenv on .python-version files
     function __find_project_file --argument-names 'fname'
         set path (string split / $PWD)/
 
@@ -64,42 +63,69 @@ if status is-interactive
             end
             set -e path[-1]
         end
-
-        return 1
     end
 
-    function __pyenv_full_path --argument-names 'venv_name'
+    function remove_path --argument-names 'path'
+        set new_path
+        for item in $PATH
+            if test $item != $path
+                set new_path $new_path $item
+            end
+        end
+        set PATH $new_path
+    end
+
+    # auto-activate pyenv on .python-version files
+    set -g __pyenv_root ''
+    set -g __nvm_root ''
+
+    function __pyenv_detect --on-variable PWD
+        set fname (__find_project_file .python-version)
+        set fname "$fname"
+        if test $__pyenv_root != $fname
+            set __pyenv_root $fname
+        end
+    end
+
+    function __nvm_detect --on-variable PWD
+        set fname (__find_project_file .nvmrc)
+        set fname "$fname"
+        if test $__nvm_root != $fname
+            set __nvm_root $fname
+        end
+    end
+
+    function __pyenv_active --on-variable __pyenv_root
+        echo __pyenv_active
+
         set -q PYENV_ROOT; or set PYENV_ROOT ~/.pyenv
-        readlink "$PYENV_ROOT/versions/$venv_name"
-        or echo "$PYENV_ROOT/versions/$venv_name"
-    end
+        set shims $PYENV_ROOT/shims
 
-    function __pyenv_deactivate --on-variable VIRTUAL_ENV
-        if set -q __pyenv_current
-            set old_path (__pyenv_full_path $__pyenv_current)"/bin"
-            set new_path
-            for item in $PATH
-                if test $item != $old_path
-                    set new_path $new_path $item
-                end
-            end
-            set PATH $new_path
-            set -e __pyenv_current
+        if set -q __pyenv
+            remove_path $shims
+            set -e __pyenv
+        end
+
+        if test $__pyenv_root != ''
+            set -g __pyenv (cat $__pyenv_root)
+            set PATH $shims $PATH
         end
     end
 
-    function __pyenv_auto_activate --on-variable PWD
-        if set fname (__find_project_file .python-version)
-            set pyenv (cat $fname)
-            if test $pyenv != "$__pyenv_current"
-                set -gx VIRTUAL_ENV (__pyenv_full_path $pyenv)
-                set -gx __pyenv_current $pyenv
-                set PATH "$VIRTUAL_ENV/bin" $PATH
-            end
-        else if set -q __pyenv_current
-            set -e VIRTUAL_ENV
+    function __nvm_active --on-variable __nvm_root
+        set -q NVM_DIR; or set -gx NVM_DIR ~/.nvm
+
+        if set -q NVM_BIN
+            remove_path $NVM_BIN
+            set -e NVM_BIN
+        end
+
+        if test $__nvm_root != ''
+            set -gx NVM_BIN $NVM_DIR/versions/node/(cat $__nvm_root)/bin
+            set PATH $NVM_BIN $PATH
         end
     end
 
-    __pyenv_auto_activate
+    __pyenv_detect
+    __nvm_detect
 end
