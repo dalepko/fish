@@ -6,4 +6,5 @@ function __complete_invoke
 end
 
 # --no-files: Don't complete files unless invoke gives an empty result
+complete --command invoke --no-files --arguments '(__complete_invoke)'
 complete --command inv --no-files --arguments '(__complete_invoke)'
