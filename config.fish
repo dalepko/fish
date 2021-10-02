@@ -79,6 +79,13 @@ if status is-interactive
     set -g __pyenv_root ''
     set -g __nvm_root ''
 
+    function __pyenv_full_path --argument-names 'venv_name'
+        set -q PYENV_ROOT; or set PYENV_ROOT ~/.pyenv
+        readlink "$PYENV_ROOT/versions/$venv_name"
+        or echo "$PYENV_ROOT/versions/$venv_name"
+    end
+
+
     function __pyenv_detect --on-variable PWD
         set fname (__find_project_file .python-version)
         set fname "$fname"
@@ -96,19 +103,19 @@ if status is-interactive
     end
 
     function __pyenv_active --on-variable __pyenv_root
-        echo __pyenv_active
-
         set -q PYENV_ROOT; or set PYENV_ROOT ~/.pyenv
         set shims $PYENV_ROOT/shims
 
         if set -q __pyenv
             remove_path $shims
             set -e __pyenv
+            set -e VIRTUAL_ENV
         end
 
         if test $__pyenv_root != ''
             set -g __pyenv (cat $__pyenv_root)
             set PATH $shims $PATH
+            set -gx VIRTUAL_ENV (__pyenv_full_path $__pyenv)
         end
     end
 
