@@ -5,22 +5,22 @@ function in_color
 end
 
 function git_info
-    set -l head_name (git rev-parse --symbolic-full-name --abbrev-ref HEAD ^ /dev/null)
+    set -l head_name (git rev-parse --symbolic-full-name --abbrev-ref HEAD 2> /dev/null)
 
     if [ (count $head_name) -gt 0 ];
         set -l branch_status ""
         set -l head_color green
 
         if [ $head_name = "HEAD" ]
-            set -l fancy_name (git describe --exact-match --all HEAD ^ /dev/null)
+            set -l fancy_name (git describe --exact-match --all HEAD 2> /dev/null)
             if [ (count $fancy_name) -eq 1 ]
                 set head_name $fancy_name
             end
         else
             set head_color blue
-            set -l upstream (git rev-parse --symbolic-full-name --abbrev-ref "@{u}" ^ /dev/null)
+            set -l upstream (git rev-parse --symbolic-full-name --abbrev-ref "@{u}" 2> /dev/null)
             if [ (count $upstream) -eq 1 ]
-                set -l updown (git rev-list HEAD...$upstream --count --left-right ^ /dev/null | tr '\t' '\n')
+                set -l updown (git rev-list HEAD...$upstream --count --left-right 2> /dev/null | tr '\t' '\n')
 
                 if [ (count $updown) -eq 2 ]
                     set -l up $updown[1]
