@@ -2,6 +2,9 @@ if status is-interactive
 
     set -l host_file ~/.config/fish/(hostname).fish
 
+    set FZF_CTRL_T_COMMAND "fd --type f . \$dir  | sed '1d; s#^\./##'"
+    set FZF_CTRL_T_OPTS "--preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
     if test -f $host_file
         source $host_file
     end
